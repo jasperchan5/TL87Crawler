@@ -10,8 +10,8 @@ router.get("/getTL87Text", async(req,res) => {
     console.log("Start");
     // const url = req.query.url;
     
-    let pageHTML = await axios.get("https://forum.gamer.com.tw/C.php?page=1&bsn=60076&snA=5653856&s_author=TL87").then().catch(() => console.log("Get pagination fail"));
-    let $ = cheerio.load(pageHTML.data);
+    const pagination = await axios.get("https://forum.gamer.com.tw/C.php?page=1&bsn=60076&snA=5653856&s_author=TL87").then().catch(() => console.log("Get pagination fail"));
+    let $ = cheerio.load(pagination.data);
     let pagesButton = $('.BH-pagebtnA').find('a');
     let pageNum = $(pagesButton.slice(-1)[0]).text();
     let response = []
