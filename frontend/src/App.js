@@ -34,20 +34,27 @@ const App = () => {
   const [rows, setRows] = useState([]);
   useEffect(() => {
     const handleDataFetch = async() => {
+      console.log("Start");
       if(localStorage.getItem("TL87Text") !== null) {
+        console.log("From local storage");
         setTL87Data(JSON.parse(localStorage.getItem("TL87Text")));
         setLoading(false);
       }
       else {
         try{
+          console.log("From backend");
           await instance.get("/api/getText").then((res) => {
             setTL87Data(res.data);
             setLoading(false);
             localStorage.setItem("TL87Text", JSON.stringify(res.data));
           })
         } 
-        catch(e){}
+        catch(e){
+          console.log("Fetch fail");
+          setLoading(false);
+        }
       }
+      console.log("End");
     }
     handleDataFetch();
   }, [])
