@@ -10,7 +10,7 @@ router.get("/getTL87Text", async(req,res) => {
     console.log("Start");
     // const url = req.query.url;
     let page = 1;
-    let url = `https://forum.gamer.com.tw/C.php?page=${page}&bsn=60076&snA=5653856&s_author=TL87`;
+    let url = `https://forum.gamer.com.tw/C.php?page=1&bsn=60076&snA=5653856&s_author=TL87`;
     let pageHTML = await axios.get(url).then().catch(() => console.log("Get pagination fail"));
     let $ = cheerio.load(pageHTML.data);
     let pagesButton = $('.BH-pagebtnA').find('a');
