@@ -25,7 +25,7 @@ import Select from '@mui/material/Select';
 
 
 const instance = axios.create({
-  baseURL: "http://localhost:4000"
+  baseURL: window.location.pathname
 })
 
 const App = () => {

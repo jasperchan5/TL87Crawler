@@ -5,6 +5,7 @@ import cheerio from 'cheerio';
 const router = express.Router();
 
 router.get("/getText", async(req,res) => {
+    console.log("Start");
     // const url = req.query.url;
     let page = 1;
     let url = `https://forum.gamer.com.tw/C.php?page=${page}&bsn=60076&snA=5653856&s_author=TL87`;
@@ -57,6 +58,7 @@ router.get("/getText", async(req,res) => {
             // console.log(response);
         })
     }
+    console.log("End");
     res.status(200).send(response);
 })
 
