@@ -11,14 +11,14 @@ router.get("/getText", async(req,res) => {
     // const url = req.query.url;
     let page = 1;
     let url = `https://forum.gamer.com.tw/C.php?page=${page}&bsn=60076&snA=5653856&s_author=TL87`;
-    let pageHTML = await axios.get(url).then().catch();
+    let pageHTML = await axios.get(url).then().catch(() => console.log("Get pagination fail"));
     let $ = cheerio.load(pageHTML.data);
     let pagesButton = $('.BH-pagebtnA').find('a');
     let pageNum = $(pagesButton.slice(-1)[0]).text();
     let response = []
     for(; page <= pageNum; page++) {
         url = `https://forum.gamer.com.tw/C.php?page=${page}&bsn=60076&snA=5653856&s_author=TL87`;
-        pageHTML = await axios.get(url).then().catch();
+        pageHTML = await axios.get(url).then().catch(() => console.log("Get content fail"));
         $ = cheerio.load(pageHTML.data);
         // console.log(url);
         $('#BH-background').each((_, eachSec) => {
