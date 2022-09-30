@@ -41,7 +41,7 @@ const App = () => {
       }
       else {
         console.log("From backend");
-        await instance.get("/api/getTL87Text").then((res) => {
+        await instance.get("/api/getText").then((res) => {
           setTL87Data(res.data);
           localStorage.setItem("TL87Text", JSON.stringify(res.data));
         }).catch((e) => console.log(e))
