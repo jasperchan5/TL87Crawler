@@ -9,15 +9,14 @@ router.get("/", (_,res) => res.status(200).send("Hello"))
 router.get("/getTL87Text", async(req,res) => {
     console.log("Start");
     // const url = req.query.url;
-    let page = 1;
-    let url = `https://forum.gamer.com.tw/C.php?page=1&bsn=60076&snA=5653856&s_author=TL87`;
-    let pageHTML = await axios.get(url).then().catch(() => console.log("Get pagination fail"));
+    
+    let pageHTML = await axios.get("https://forum.gamer.com.tw/C.php?page=1&bsn=60076&snA=5653856&s_author=TL87").then().catch(() => console.log("Get pagination fail"));
     let $ = cheerio.load(pageHTML.data);
     let pagesButton = $('.BH-pagebtnA').find('a');
     let pageNum = $(pagesButton.slice(-1)[0]).text();
     let response = []
-    for(; page <= pageNum; page++) {
-        url = `https://forum.gamer.com.tw/C.php?page=${page}&bsn=60076&snA=5653856&s_author=TL87`;
+    for(let page = 1; page <= pageNum; page++) {
+        const url = `https://forum.gamer.com.tw/C.php?page=${page}&bsn=60076&snA=5653856&s_author=TL87`;
         pageHTML = await axios.get(url).then().catch(() => console.log("Get content fail"));
         $ = cheerio.load(pageHTML.data);
         // console.log(url);
