@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", (_,res) => res.status(200).send("Hello"))
 
-router.get("/getText", async(req,res) => {
+router.get("/getTL87Text", async(req,res) => {
     console.log("Start");
     // const url = req.query.url;
     let page = 1;
