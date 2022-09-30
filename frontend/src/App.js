@@ -25,7 +25,7 @@ import Select from '@mui/material/Select';
 
 
 const instance = axios.create({
-  baseURL: "https://tl87crawler.herokuapp.com/"
+  baseURL: "https://tl87crawler.herokuapp.com"
 })
 
 const App = () => {
@@ -53,7 +53,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    // console.log(TL87Data);
+    console.log(TL87Data);
     setRows(TL87Data.map((e, i) => createData(e.date, e.content, e.replies)));
   }, [TL87Data])
 
