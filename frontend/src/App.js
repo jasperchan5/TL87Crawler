@@ -38,22 +38,15 @@ const App = () => {
       if(localStorage.getItem("TL87Text") !== null) {
         console.log("From local storage");
         setTL87Data(JSON.parse(localStorage.getItem("TL87Text")));
-        setLoading(false);
       }
       else {
-        try{
-          console.log("From backend");
-          await instance.get("/api/getText").then((res) => {
-            setTL87Data(res.data);
-            setLoading(false);
-            localStorage.setItem("TL87Text", JSON.stringify(res.data));
-          })
-        } 
-        catch(e){
-          console.log("Fetch fail");
-          setLoading(false);
-        }
+        console.log("From backend");
+        await instance.get("/api/getText").then((res) => {
+          setTL87Data(res.data);
+          localStorage.setItem("TL87Text", JSON.stringify(res.data));
+        }).catch((e) => console.log(e))
       }
+      setLoading(false);
       console.log("End");
     }
     handleDataFetch();
