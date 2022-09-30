@@ -10,14 +10,18 @@ router.get("/getText", async(req,res) => {
     console.log("Start");
     // const url = req.query.url;
     
-    const pagination = await axios.get("https://forum.gamer.com.tw/C.php?bsn=60076&snA=5653856`").then().catch(() => console.log("Get pagination fail"));
+    const pagination = await axios.get("https://forum.gamer.com.tw/C.php?page=1&bsn=60076&snA=5653856&s_author=TL87", {
+        headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.92 Safari/537.36'}
+    }).then().catch(() => console.log("Get pagination fail"));
     let $ = cheerio.load(pagination.data);
     let pagesButton = $('.BH-pagebtnA').find('a');
     let pageNum = $(pagesButton.slice(-1)[0]).text();
     let response = []
     for(let page = 1; page <= pageNum; page++) {
-        const url = `https://forum.gamer.com.tw/C.php?bsn=60076&snA=5653856`;
-        pageHTML = await axios.get(url).then().catch(() => console.log("Get content fail"));
+        const url = `https://forum.gamer.com.tw/C.php?page=${page}&bsn=60076&snA=5653856&s_author=TL87`;
+        const pageHTML = await axios.get(url, {
+            headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.92 Safari/537.36'}
+        }).then().catch(() => console.log("Get content fail"));
         $ = cheerio.load(pageHTML.data);
         // console.log(url);
         $('#BH-background').each((_, eachSec) => {

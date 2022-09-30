@@ -24,8 +24,11 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 
+// const instance = axios.create({
+//   baseURL: "https://tl87crawler.herokuapp.com"
+// })
 const instance = axios.create({
-  baseURL: "https://tl87crawler.herokuapp.com"
+  baseURL: "https://tl87crawler.herokuapp.com/"
 })
 
 const App = () => {
@@ -38,6 +41,7 @@ const App = () => {
       if(localStorage.getItem("TL87Text") !== null) {
         console.log("From local storage");
         setTL87Data(JSON.parse(localStorage.getItem("TL87Text")));
+        localStorage.removeItem("TL87Text");
       }
       else {
         console.log("From backend");
