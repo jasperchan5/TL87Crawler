@@ -16,7 +16,7 @@ router.get("/getText", async(req,res) => {
     let pageNum = $(pagesButton.slice(-1)[0]).text();
     let response = []
     for(let page = 1; page <= pageNum; page++) {
-        const url = `https://forum.gamer.com.tw/C.php?bsn=60076&snA=5653856&s_author=TL87`;
+        const url = `https://forum.gamer.com.tw/C.php?bsn=60076&snA=5653856`;
         pageHTML = await axios.get(url).then().catch(() => console.log("Get content fail"));
         $ = cheerio.load(pageHTML.data);
         // console.log(url);
