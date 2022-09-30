@@ -25,7 +25,7 @@ import Select from '@mui/material/Select';
 
 
 const instance = axios.create({
-  baseURL: window.location.pathname
+  baseURL: "https://tl87crawler.herokuapp.com/"
 })
 
 const App = () => {
