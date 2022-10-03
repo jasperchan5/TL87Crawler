@@ -5,6 +5,17 @@ import fakeUA from 'fake-useragent';
 import mongoose from 'mongoose';
 import Comment from './db.js';
 import dotenv from 'dotenv-defaults';
+import createJieba from 'js-jieba';
+import { JiebaDict, HMMModel, UserDict, IDF, StopWords } from 'jieba-zh-tw';
+
+const jieba = createJieba(
+  JiebaDict,
+  HMMModel,
+  UserDict,
+  IDF,
+  StopWords
+)
+
 
 const router = express.Router();
 
@@ -12,7 +23,7 @@ router.get("/", (_,res) => res.status(200).send("Hello"))
 
 router.get("/getText", async(req,res) => {
     console.log("Start");
-    let response = []
+    let response = [];
 
     // Connect to mongo db
     dotenv.config();
@@ -24,11 +35,11 @@ router.get("/getText", async(req,res) => {
     })
     .then(() => console.log("mongo db connection created"));
 
-    console.log("Crawling into db!");
     const findComments = await Comment.find({});
     console.log(findComments.length);
     switch(findComments.length) {
         case 0:
+            console.log("Start crawling");
             const pagination = await axios.get("https://forum.gamer.com.tw/C.php?page=1&bsn=60076&snA=5653856&s_author=TL87", { headers: {'User-Agent': fakeUA()}}).then().catch((e) => console.log("Get pagination fail", e));
             let $ = cheerio.load(pagination.data);
             let pagesButton = $('.BH-pagebtnA').find('a');
@@ -76,18 +87,20 @@ router.get("/getText", async(req,res) => {
                             // console.log(newComment);
                             const findOneComment = await Comment.findOne({date: toPush.date, content: toPush.content, replies: toPush.replies});
                             if(findOneComment === null){
-                                console.log("Not exist");
-                                await newComment.save().then(() => console.log("Save success")).catch(() => console.log("Save failed"));
+                                // console.log("Not exist");
+                                await newComment.save().then().catch();
                             }
                             else {
-                                console.log("Exists");
+                                // console.log("Exists");
                             }
                         }
                     })
                     // console.log(response);
                 })
             }
+            break;
         default:
+            console.log("Fetch from db");
             const allComments = await Comment.find({});
             allComments.forEach((e, i) => {
                 let toPush = {
@@ -97,6 +110,7 @@ router.get("/getText", async(req,res) => {
                 }
                 response.push(toPush);
             })
+            break;
     }
    
     console.log("End");
@@ -120,7 +134,7 @@ router.get("/deleteDB", async(_, res) => {
     else {
         console.log("Empty nothing to delete");
     }
-    res.status(200).send("Delete all things in DB!")
+    res.status(200).send("Delete db")
 })
 
 export default router;

@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Card, Chip, Grid } from '@mui/material';
+import { Button, Card, Chip, Grid } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import InputLabel from '@mui/material/InputLabel';
@@ -23,13 +23,15 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import { Alert, AlertTitle, Snackbar } from '@mui/material';
 
-const instance = axios.create({
-  baseURL: "https://tl87crawler.herokuapp.com/"
-})
+
 // const instance = axios.create({
-//   baseURL: "http://localhost:4000"
+//   baseURL: "https://tl87crawler.herokuapp.com/"
 // })
+const instance = axios.create({
+  baseURL: "http://localhost:4000"
+})
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -248,9 +250,39 @@ const App = () => {
     );
   }
 
+  const [successAlertIn, setSuccessAlertIn] = useState(false);
+  const SuccessAlert = ({title, content}) => {
+    return (
+      <Snackbar anchorOrigin={{ vertical: "top", horizontal: "center"}} open={successAlertIn} autoHideDuration={5000} onClose={() => setSuccessAlertIn(false)}>
+        <Alert severity="success">
+          <AlertTitle>{title}</AlertTitle>
+          {content}
+        </Alert>
+      </Snackbar>
+    )
+  }
+  const [buttonProgressing, setButtonProgressing] = useState(false);
+
   return (
     <>
+      <SuccessAlert title={"刪除成功"} content={"資料庫已清空"}/>
       <Card sx={{width: "20%", margin: "auto", padding: "12px", fontWeight: 700, fontSize: "32px", marginTop: "24px", textAlign: "center", boxShadow: "2px 2px 20px #CDCFD0" }}>邊緣人語錄</Card>
+      <Card sx={{width: "10%", margin: "24px auto"}}>
+        <Button disabled={TL87Data.length === 0} sx={{width: "100%", margin: "auto"}} onClick={async() => {
+          localStorage.removeItem("TL87Text");
+          setButtonProgressing(true);
+          await instance.get("/api/deleteDB").then(() => {
+            setSuccessAlertIn(true)
+            setTL87Data([]);
+            setButtonProgressing(false);
+          }).catch();
+        }}>
+          <Box sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "space-around"}}>
+            <div>清除資料</div>
+            { buttonProgressing ? <CircularProgress size={20}/> : <></> }
+          </Box>
+        </Button>
+      </Card>
       <Card id="Table" sx={{width: "80%", minHeight: "250px", margin: "24px auto", display: "flex", alignItems: "center", justifyContent: "center"}}>
         { loading ? <Box sx={{display: "flex", justifyContent: "center", alignItems: "center"}}><CircularProgress size={150}/></Box> : <TL87Table/>}
       </Card>
