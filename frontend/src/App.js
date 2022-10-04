@@ -267,7 +267,7 @@ const App = () => {
     <>
       <SuccessAlert title={"刪除成功"} content={"資料庫已清空"}/>
       <Card sx={{width: "20%", margin: "auto", padding: "12px", fontWeight: 700, fontSize: "32px", marginTop: "24px", textAlign: "center", boxShadow: "2px 2px 20px #CDCFD0" }}>邊緣人語錄</Card>
-      <Card sx={{width: "10%", margin: "24px auto"}}>
+      {/* <Card sx={{width: "10%", margin: "24px auto"}}>
         <Button disabled={TL87Data.length === 0} sx={{width: "100%", margin: "auto"}} onClick={async() => {
           localStorage.removeItem("TL87Text");
           setButtonProgressing(true);
@@ -282,7 +282,7 @@ const App = () => {
             { buttonProgressing ? <CircularProgress size={20}/> : <></> }
           </Box>
         </Button>
-      </Card>
+      </Card> */}
       <Card id="Table" sx={{width: "80%", minHeight: "250px", margin: "24px auto", display: "flex", alignItems: "center", justifyContent: "center"}}>
         { loading ? <Box sx={{display: "flex", justifyContent: "center", alignItems: "center"}}><CircularProgress size={150}/></Box> : <TL87Table/>}
       </Card>
